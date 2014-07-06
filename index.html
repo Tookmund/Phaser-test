@@ -162,6 +162,10 @@ function update() {
         player.kill();
         gameover.text = "GAME OVER!";
     }
+    if (score == 120) {
+        gameover.text = "Good Job!!!!!!!";
+        diamonds.kill();
+    }
 
 }
 
