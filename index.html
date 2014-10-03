@@ -37,7 +37,7 @@ var scoreText;
 var health = 1000;
 var healthText;
 var gameover;
-
+var allStarsCollected = false;
 function create() {
 
     //  We're going to be using physics, so enable the Arcade Physics system
@@ -111,7 +111,7 @@ function create() {
     //  The score
     scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
     healthText = game.add.text(16, 64, 'health: 1000', { fontSize: '32px', fill: "#000"});
-    gameover = game.add.text(0,0,"", {fontSize: '72px', fill: "#00"});
+    gameover = game.add.text(16,128,"  ", {fontSize: '32px', fill: "#000"});
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
     
@@ -164,7 +164,7 @@ function update() {
     }
     if (score == 120) {
         gameover.text = "Good Job!!!!!!!";
-        diamonds.kill();
+        allStarsCollected = true;
     }
 
 }
@@ -180,7 +180,13 @@ function collectStar (player, star) {
 
 }
 function touchSpike (player, spike) {
-    health -= 5;
+    if(!allStarsCollected) {
+        health -= 5;
+    } else {
+        spike.kill();
+        score += 20;
+        scoreText.text = "Score: " + score;
+    }
     healthText.text = "Health: " + health;
 }
 
