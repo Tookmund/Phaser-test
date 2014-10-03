@@ -1,5 +1,4 @@
-<!doctype html> 
-<html lang="en"> 
+<html> 
 <head> 
 	<meta charset="UTF-8" />
     <title>GAME</title>
@@ -30,6 +29,7 @@ var player;
 var platforms;
 var cursors;
 
+var groundPound = 0;
 var stars;
 var spikes;
 var score = 0;
@@ -145,8 +145,8 @@ function update() {
 
         player.animations.play('right');
     }
-    else if (cursors.down.isDown) {
-        player.body.velocity.y += 10000;
+    else if (cursors.down.isDown && !(player.body.touching.down)) {
+        player.body.velocity.y += groundPound;
     }
     else
     {
@@ -166,9 +166,17 @@ function update() {
         gameover.text = "GAME OVER!";
     }
     if (score == 120) {
-        gameover.text = "Good Job!!!!!!!";
+        gameover.text = "New ability: Ground Pound";
+        health += 1000;
+        healthText.text = "Health: " + health;
         allStarsCollected = true;
+        groundPound = 1000;
     }
+    if (score == 360) {
+        scoreText.text = "Score: " + score;
+        healthText.text = "+ " + health + "Health ";
+        finalscore = score + health;
+        gameover.text = "You Win!! Final score: " + finalscore; 
 
 }
 
@@ -183,9 +191,8 @@ function collectStar (player, star) {
 
 }
 function touchSpike (player, spike) {
-    if(!allStarsCollected) {
-        health -= 5;
-    } else {
+    health -= 5;
+    if (player.body.velocity.y >= groundPound && groundPound > 0){
         spike.kill();
         score += 20;
         scoreText.text = "Score: " + score;
